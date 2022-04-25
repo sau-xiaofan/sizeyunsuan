@@ -1,0 +1,32 @@
+server:
+  port: 8080
+
+# 数据库的配置信息
+spring:
+  datasource:
+    hikari:
+      connection-timeout: 30000
+      max-lifetime: 1800000
+      maximum-pool-size: 15
+      minimum-idle: 5
+      connection-test-query: select 1
+      pool-name: HikariCP
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://jianml.cn:3306/mybatis?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    url: jdbc:p6spy:mysql://localhost:3306/sauwifi?useUnicode=true&characterEncoding=UTF-8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=GMT%2b8
+    username: root
+    password: sxf010629
+
+mybatis-plus:
+  # MyBatis Mapper 所对应的 XML 文件位置
+  mapper-locations: classpath:mapper/*.xml
+  #  MyBaits 别名包扫描路径，通过该属性可以给包中的类注册别名，
+  # 注册后在 Mapper 对应的 XML 文件中可以直接使用类名，而不用使用全限定的类名（即 XML 中调用的时候不用包含包名）
+  type-aliases-package: edu.sau.sizeyunsuan.entity
+  configuration:
+    #配置JdbcTypeForNull, oracle数据库必须配置
+    jdbc-type-for-null: null
+  global-config:
+    # 关闭 mybatis-plus的 banner
+    banner: false

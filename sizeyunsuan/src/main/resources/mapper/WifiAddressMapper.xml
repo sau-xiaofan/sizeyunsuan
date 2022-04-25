@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.sau.sizeyunsuan.mapper.WifiAddressMapper">
+
+    <insert id="saveStudentAddress">
+        insert into student_wifi_address(uid, created, xuegonghao, xingming, beizhu, address, id)
+        values(
+                  #{param1}, #{param2}, #{param3}, #{param4}, #{param5}, #{param6}, #{param7}
+              )
+    </insert>
+
+    <insert id="saveAddress">
+        insert into wifi_address(address_id, address)
+        values(
+                  #{param1},  #{param2}
+              )
+    </insert>
+
+    <update id="updateStudentAddress">
+        update student_wifi_address
+        set created = #{param1}, xuegonghao = #{param2}, xingming = #{param3}, beizhu = #{param4}, address = #{param5}
+        where id = #{param6}
+    </update>
+
+    <select id="findAddressNum" resultType="java.lang.Integer">
+        select count(1) from wifi_address where address = #{address}
+    </select>
+
+    <select id="findStudentNum" resultType="java.lang.Integer">
+        select count(1) from student_wifi_address where id = #{id}
+    </select>
+
+    <select id="findStudentById" resultType="edu.sau.sizeyunsuan.entity.PageData">
+        select * from student_wifi_address where id = #{id}
+    </select>
+
+    <select id="datalistPage" resultType="edu.sau.sizeyunsuan.entity.PageData">
+        select
+        *
+        from
+        student_wifi_address f
+        where 1 = 1
+        <if test="pd.studentName != null and pd.studentName != ''"><!-- 关键词检索 -->
+            and f.xingming LIKE CONCAT(CONCAT('%', #{pd.studentName}),'%')
+        </if>
+        <if test="pd.studentNum != null and pd.studentNum != ''"><!-- 关键词检索 -->
+            and f.xuegonghao LIKE CONCAT(CONCAT('%', #{pd.studentNum}),'%')
+        </if>
+        <if test="pd.studentId != null and pd.studentId != ''"><!-- 关键词检索 -->
+            and f.id LIKE CONCAT(CONCAT('%', #{pd.studentId}),'%')
+        </if>
+        limit #{pd.currentPage}, #{pd.showCount}
+    </select>
+
+    <select id="studentNumByStudentInfo" resultType="java.lang.Integer">
+        select
+        count(1)
+        from
+        student_wifi_address f
+        where 1 = 1
+        <if test="pd.studentName != null and pd.studentName != ''"><!-- 关键词检索 -->
+            and f.xingming LIKE CONCAT(CONCAT('%', #{pd.studentName}),'%')
+        </if>
+        <if test="pd.studentNum != null and pd.studentNum != ''"><!-- 关键词检索 -->
+            and f.xuegonghao LIKE CONCAT(CONCAT('%', #{pd.studentNum}),'%')
+        </if>
+        <if test="pd.studentId != null and pd.studentId != ''"><!-- 关键词检索 -->
+            and f.id LIKE CONCAT(CONCAT('%', #{pd.studentId}),'%')
+        </if>
+    </select>
+
+</mapper>
