@@ -32,6 +32,13 @@
         <el-button @click="resetForm('form')">重置</el-button>
       </el-form-item>
     </el-form>
+    <el-button
+      type="primary"
+      size="mini"
+      icon="el-icon-download"
+      @click="downloadTemplate"
+    >导出</el-button
+    >
     <el-table
       class="my-one-row"
       :data="tableData"
@@ -189,6 +196,24 @@ export default {
       } else {
         this.doubleNumDisabled = true;
       }
+    },
+    downloadTemplate() {
+      const param = {
+        varList: this.totalData
+      };
+      this.$axios
+        .post('/formula/excel', param, {responseType: 'blob'})
+        .then(function (response) {
+          const url = window.URL.createObjectURL(new Blob([response.data]))
+          const link = document.createElement('a')
+          link.href = url
+          link.setAttribute('download', '四则运算式.xls')
+          document.body.appendChild(link)
+          link.click()
+        })
+        .catch((error) => {
+
+        });
     }
   },
   created() {

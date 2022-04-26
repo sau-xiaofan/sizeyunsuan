@@ -1,14 +1,17 @@
 package edu.sau.sizeyunsuan.controller;
 
+import com.sun.corba.se.spi.orbutil.proxy.LinkedInvocationHandler;
 import edu.sau.sizeyunsuan.entity.Page;
 import edu.sau.sizeyunsuan.entity.PageData;
 import edu.sau.sizeyunsuan.service.wifiAddressService;
+import edu.sau.sizeyunsuan.util.ObjectExcelView;
 import edu.sau.sizeyunsuan.util.Tools;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.text.DecimalFormat;
 import java.util.*;
@@ -151,6 +154,29 @@ public class formulaController extends BaseController{
         map.put("page", page);
         map.put("result", errInfo);
         return map;
+    }
+
+    @RequestMapping(value="/excel")
+    public ModelAndView exportExcel(@RequestBody PageData pd) throws Exception{
+        ModelAndView mv = new ModelAndView();
+        Map<String,Object> dataMap = new HashMap<String,Object>();
+        List<String> titles = new ArrayList<String>();
+        titles.add("序号");	//1
+        titles.add("四则运算式");	//2
+        dataMap.put("titles", titles);
+        List<LinkedHashMap> varOList = (List<LinkedHashMap>) pd.get("varList");
+        List<PageData> varList = new ArrayList<PageData>();
+        for(int i=0;i<varOList.size();i++){
+            PageData vpd = new PageData();
+            LinkedHashMap data = varOList.get(i);
+            vpd.put("var1", data.get("id").toString());	    //1
+            vpd.put("var2", data.get("formula"));	    //2
+            varList.add(vpd);
+        }
+        dataMap.put("varList", varList);
+        ObjectExcelView erv = new ObjectExcelView();
+        mv = new ModelAndView(erv,dataMap);
+        return mv;
     }
 
 
