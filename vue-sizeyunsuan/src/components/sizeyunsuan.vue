@@ -198,6 +198,10 @@ export default {
       }
     },
     downloadTemplate() {
+      if(this.totalData.length == 0) {
+        this.$message.error("当前没有生成过四则运算式，请生成！");
+        return false;
+      }
       const param = {
         varList: this.totalData
       };

@@ -12,6 +12,7 @@
     <artifactId>sizeyunsuan</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>sizeyunsuan</name>
+    <packaging>war</packaging>
 
     <properties>
         <java.version>1.8</java.version>
@@ -25,6 +26,15 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <!-- 移除嵌入式tomcat插件  war包方式部署时，解开注释  -->
+            <!--
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
+            -->
         </dependency>
         <!-- mysql驱动 -->
         <dependency>
